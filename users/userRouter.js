@@ -6,7 +6,17 @@ const Posts = require('./userDb');
 const router = express.Router();
 
 router.post('/', (req, res) => {
-  // do your magic!
+  Users.insert(req.body)
+    .then( user => {
+      res.status(201).json(user);
+    })
+    .catch( (err) => {
+      console.error(err);
+      res.status(500).json({
+        message: 'There was an error adding the user',
+        err
+      })
+    })
 });
 
 router.post('/:id/posts', (req, res) => {
@@ -20,7 +30,8 @@ router.get('/', (req, res) => {
     })
     .catch((err) => {
       res.status(500).json({
-
+        message: "There was an error on fetching users",
+        err
       })
     })
 });
@@ -61,11 +72,44 @@ router.get('/:id/posts', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // do your magic!
+  Users.remove(parseInt(req.params.id))
+    .then((user) => {
+      user
+        ? res.status(200).json({
+            user,
+            message: "user was successfully deleted"
+          })
+        : res.status(404).json({
+          message: "That user does not exist"
+        })
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "There was an error on the server",
+        err
+      })
+    })
 });
 
 router.put('/:id', (req, res) => {
-  // do your magic!
+
+  Users.update(req.params.id, req.body)
+    .then((user) => {
+      user
+        ? res.status(200).json({
+            user,
+            message: "The user was updated"
+          })
+        : res.status(404).json({
+          message: "That user does not exisit"
+        })
+    })
+    .catch((err) => {
+      res.status(500).json({
+        message: "There was an error with the server",
+        err
+      })
+    })
 });
 
 //custom middleware
