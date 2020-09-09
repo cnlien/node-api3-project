@@ -89,13 +89,8 @@ router.delete('/:id', validateUserId, (req, res) => {
   Users.remove(parseInt(req.params.id))
     .then((user) => {
       user
-        ? res.status(200).json({
-            user,
-            message: "user was successfully deleted"
-          })
-        : res.status(404).json({
-          message: "That user does not exist"
-        })
+        ? res.status(200).json({ user, message: "user was successfully deleted" })
+        : res.status(404).json({ message: "That user does not exist" })
     })
     .catch((err) => {
       res.status(500).json({
@@ -142,35 +137,16 @@ function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   const data = req.body;
-  if(!data){
-    res.status(400).json({
-      message: "missing user data"
-    })
-  } else if(!data.name) {
-    res.status(400).json({
-      message: "missing required name field"
-    })
-  } else {
-    next();
-  }
+  !data ? res.status(400).json({ message: "missing user data" })
+  : !data.name ? res.status(400).json({ message: "missing required name field" })
+  : next();
 }
 
 function validatePost(req, res, next) {
   const data = req.body;
-
-  !data ? res.status(400).json({message: "missing post data"})
-  : !data.text ? res.status(400).json({message: "missing required text field"})
+  !data ? res.status(400).json({ message: "missing post data" })
+  : !data.text ? res.status(400).json({ message: "missing required text field" })
   : next();
-  
-  // if(!data) {
-  //   res.status(400).json({
-  //     message: "missing post data"
-  //   })
-  // } else if(!data.text) {
-  //   res.status(400).json({
-  //     message: "missing required text field"
-  //   })
-  // }
 }
 
 module.exports = router;

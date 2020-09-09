@@ -28,9 +28,9 @@ Follow these steps for completing your project.
 
 ## Minimum Viable Product
 
-1. Write and implement four custom `middleware` functions, detailed below.
-1. Build an API to let clients perform CRUD operations on `users`.
-1. Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
+1. [ ] Write and implement four custom `middleware` functions, detailed below.
+1. [x] Build an API to let clients perform CRUD operations on `users`.
+1. [ ] Add endpoints to retrieve the list of `posts` for a `user` and to store a new `post` for a `user`.
 
 ---
 
@@ -43,20 +43,20 @@ Follow these steps for completing your project.
 ---
 #### `validateUserId()`
 
-  - [ ] `validateUserId` validates the user id on every request that expects a user id parameter
-  - [ ] if the `id` parameter is valid, store that user object as `req.user`
-  - [ ] if the `id` parameter does not match any user id in the database, cancel the request and respond with status `400` and `{ message: "invalid user id" }`
+  - [x] `validateUserId` validates the user id on every request that expects a user id parameter
+  - [x] if the `id` parameter is valid, store that user object as `req.user`
+  - [x] if the `id` parameter does not match any user id in the database, cancel the request and respond with status `400` and `{ message: "invalid user id" }`
 ---
 #### `validateUser()`
 
-  - [ ] `validateUser` validates the `body` on a request to create a new user
-  - [ ] if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing user data" }`
-  - [ ] if the request `body` is missing the required `name` field, cancel the request and respond with status `400` and `{ message: "missing required name field" }`
+  - [x] `validateUser` validates the `body` on a request to create a new user
+  - [x] if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing user data" }`
+  - [x] if the request `body` is missing the required `name` field, cancel the request and respond with status `400` and `{ message: "missing required name field" }`
 ---
 #### `validatePost()`
-  - [ ] `validatePost` validates the `body` on a request to create a new post
-  - [ ] if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing post data" }`
-  - [ ] if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }`
+  - [x] `validatePost` validates the `body` on a request to create a new post
+  - [x] if the request `body` is missing, cancel the request and respond with status `400` and `{ message: "missing post data" }`
+  - [x] if the request `body` is missing the required `text` field, cancel the request and respond with status `400` and `{ message: "missing required text field" }`
 
 ---
 
