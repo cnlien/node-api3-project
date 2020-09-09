@@ -5,7 +5,7 @@ const Posts = require('../posts/postDb.js')
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+router.post('/', validateUser, (req, res) => {
   Users.insert(req.body)
     .then( user => {
       res.status(201).json(user);
@@ -18,7 +18,7 @@ router.post('/', (req, res) => {
     })
 });
 
-router.post('/:id/posts', (req, res) => {
+router.post('/:id/posts', validateUserId, validatePost, (req, res) => {
   const id = req.params.id;
   const data = req.body;
 
@@ -50,7 +50,7 @@ router.get('/', (req, res) => {
     })
 });
 
-router.get('/:id', (req, res) => {
+router.get('/:id', validateUserId, (req, res) => {
   Users.getById(req.params.id)
     .then((user) => {
       user 
@@ -67,7 +67,7 @@ router.get('/:id', (req, res) => {
     })
 });
 
-router.get('/:id/posts', (req, res) => {
+router.get('/:id/posts', validateUserId, (req, res) => {
   const userId = parseInt(req.params.id)
   Users.getUserPosts(userId)
     .then((userPosts) => {
@@ -85,7 +85,7 @@ router.get('/:id/posts', (req, res) => {
     })
 });
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', validateUserId, (req, res) => {
   Users.remove(parseInt(req.params.id))
     .then((user) => {
       user
@@ -105,7 +105,7 @@ router.delete('/:id', (req, res) => {
     })
 });
 
-router.put('/:id', (req, res) => {
+router.put('/:id', validateUserId, validateUser, (req, res) => {
 
   Users.update(req.params.id, req.body)
     .then((user) => {
@@ -129,15 +129,48 @@ router.put('/:id', (req, res) => {
 //custom middleware
 
 function validateUserId(req, res, next) {
-  // do your magic!
+  const id = req.params.id;
+  Users.getById(id)
+    .then((userid) => {
+      !userid
+        ? res.status(404).json({
+          message: 'Invalid User ID'
+        })
+        : next()
+    })
 }
 
 function validateUser(req, res, next) {
-  // do your magic!
+  const data = req.body;
+  if(!data){
+    res.status(400).json({
+      message: "missing user data"
+    })
+  } else if(!data.name) {
+    res.status(400).json({
+      message: "missing required name field"
+    })
+  } else {
+    next();
+  }
 }
 
 function validatePost(req, res, next) {
-  // do your magic!
+  const data = req.body;
+
+  !data ? res.status(400).json({message: "missing post data"})
+  : !data.text ? res.status(400).json({message: "missing required text field"})
+  : next();
+  
+  // if(!data) {
+  //   res.status(400).json({
+  //     message: "missing post data"
+  //   })
+  // } else if(!data.text) {
+  //   res.status(400).json({
+  //     message: "missing required text field"
+  //   })
+  // }
 }
 
 module.exports = router;
